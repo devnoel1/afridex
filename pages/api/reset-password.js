@@ -30,7 +30,7 @@ export default async function handler(req, res) {
           .send({ success: false, message: "Invalid user token" });
 
       user.password = password;
-      user.secretToken = "";
+      user.PasswordResetToken = "";
       await user.save();
 
       // response
