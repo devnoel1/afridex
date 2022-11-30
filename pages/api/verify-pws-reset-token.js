@@ -1,6 +1,7 @@
 import dbConnect from "../../lib/dbConnect";
 
-import VerifyUser from "../../models/VerifyUser";
+import User from "../../models/User";
+import AccessToken from "../../models/AccessToken";
 
 import moment from "moment";
 
@@ -13,24 +14,22 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       // get token from request
-      const { tokenId } = req.body;
+      const { token } = req.body;
+
+      if (!token || token == "")
+        res.status(400).send({ success: false, message: "token cannot be empty" });
 
       // get token
-      const token = VerifyUser.findOne({ token: tokenId });
+      const checkToken = User.findOne({ secretToken: token });
 
       // check if token exists
-      if (!token)
+      if (!checkToken)
         res.status(400).send({ success: false, message: "Invalid token" });
-
-      // get user
-      await User.findByIdAndUpdate(token.user, {
-        email_verified_at: moment().format("MM/DD/YYYY hh:mm:ss"),
-      });
 
       // response
       res
         .status(201)
-        .send({ success: true, message: "account verified successfully " });
+        .send({ success: true, message: "Token accepted, Please change your password" });
 
       break;
     default:

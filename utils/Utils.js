@@ -1,25 +1,27 @@
 import randomstring from "randomstring"
-import VerifyUser from "../models/VerifyUser"
-import { verifyEmailTmp } from "../emailTmps/verifyEmailTmp"
+import VerifyUser from "../models/AccessToken"
+import verifyEmailTmp  from "../emailTmps/verifyEmailTmp"
 import dbConnect from "../lib/dbConnect";
 
 
-export const generateToken = async (user)=>{
+export const generateToken = ()=>{
 
-  await dbConnect();
+  // await dbConnect();
 
     // generate token
-    let secretToken = randomstring.generate({
-        length: 6,
+    const secretToken = randomstring.generate({
+        length: 4,
         charset: 'numeric'
       });
 
     //   store token
-      await new VerifyUser({
-        token:secretToken,
-        user:user
-      })
+      // await new VerifyUser({
+      //   token:secretToken,
+      //   user:user._id
+      // })
 
     //   send email
-    verifyEmailTmp(user,secretToken)
+
+    return secretToken
+    
 }

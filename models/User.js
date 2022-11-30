@@ -4,24 +4,31 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  email_verified_at: { type: String, required: false },
-  created_at: { type: String, default: new Date() },
-  wallets:[
-    {type:mongoose.Schema.Types.ObjectId,ref:"Wallet"}
-  ],
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
+const UserSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    emailVerifiedAt: { type: String, required: false },
+    verified:{type: Boolean,default: 0},
+    secretToken: {
+      type: String,
     },
-  ],
-});
+    PasswordResetToken: {
+      type: String,
+    },
+    wallets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Wallet" }],
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 UserSchema.pre("save", async function (next) {
   const user = this;
@@ -61,4 +68,10 @@ UserSchema.statics.findByCredentials = async ({ user_id, password }) => {
   return user;
 };
 
-module.exports = mongoose.models.User || mongoose.model("User", UserSchema);
+mongoose.models = {};
+
+var User = mongoose.model('User', UserSchema);
+
+export default User;
+
+// module.exports = mongoose.models.User || mongoose.model("User", UserSchema);

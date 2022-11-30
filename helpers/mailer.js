@@ -1,11 +1,13 @@
-import createTransport from "nodemailer"
+const nodemailer = require('nodemailer');
 import { getSettings } from "./getSettings" 
  
-const transport = createTransport({
+const transport = nodemailer.createTransport({
     service : 'Gmail',
     auth : { 
-        user : getSettings.gmail_user, 
-        pass : getSettings.gmail_pass
+        // user : getSettings.gmail_user, 
+        // pass : getSettings.gmail_pass
+        user: "yoitsburby@gmail.com",
+        pass:"fkozpvltmjznlrxp"
     }, 
     tls: { 
         rejectUnauthorized: false 

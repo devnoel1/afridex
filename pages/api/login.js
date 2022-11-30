@@ -1,6 +1,7 @@
 import { loginValidation } from "../../midleware/validate";
 import dbConnect from "../../lib/dbConnect";
 import User from "../../models/User";
+import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
             .status(400)
             .json({ success: false, message: "invalid creadentails" });
 
-        const token = await user.generateAuthToken();
+        await user.generateAuthToken();
 
         // return response
         res.status(201).json({

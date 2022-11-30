@@ -1,14 +1,15 @@
 import { getSettings } from "../helpers/getSettings";
 import  sendEmail from "../helpers/mailer"
 
-const verifyEmailTmp = async (user, token) => {
+const pwsEmailTmp = async (user, token) => {
   const html = `Hello ${user.name},
     <br/>
     <br>
-    Thank you for your registration. 
+    your password reset code iz
     <br/>
     <br/>
-    <strong>${token}</strong> is your verification code to continue your signup.
+    <strong>${token}</strong> .
+    <p>please ignore this mail if you did not request for password reset</p>
     <br><br>
     Cheers,
     <br>
@@ -18,9 +19,9 @@ const verifyEmailTmp = async (user, token) => {
   await sendEmail(
     `${getSettings.email}`,
     user.email,
-    `${getSettings.title}: Please activate your account`,
+    `${getSettings.title}: PAasword Reset`,
     html
   );
 };
 
-module.exports = verifyEmailTmp;
+module.exports = pwsEmailTmp;
