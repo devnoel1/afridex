@@ -1,7 +1,7 @@
 import { verifyEmailTmp } from "../../emailTmps/verifyEmailTmp";
 import dbConnect from "../../lib/dbConnect";
 import User from "../../models/User";
-import VerifyUser from "../../models/VerifyUser";
+import AccessToken from "../../models/AccessToken";
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           .json({ success: false, message: "email not found" });
 
       // get existing token from verify table
-      const token = VerifyUser.findById(user._id);
+      const token = await  AccessToken.findById(user.email);
 
       // send email
       verifyEmailTmp(user, token.token);
